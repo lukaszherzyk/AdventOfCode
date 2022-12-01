@@ -1,1 +1,0 @@
-# AdventOfCode2021
