@@ -147,7 +147,7 @@ noop`;
 input = require('fs')
   .readFileSync(__dirname + '/input.txt')
   .toString();
-const part1 = (input) => {
+const solution = (input) => {
   const queue = [];
   const lines = input.split('\n').forEach((element) => {
     if (element === 'noop') {
@@ -160,16 +160,18 @@ const part1 = (input) => {
   let sum = 0;
   let register = 1;
   const cycles = [20, 60, 100, 140, 180, 220];
+  const crtCycle = [40, 80, 120, 160, 200, 240];
   const allValues = [1];
   let command = '';
   let value = 0;
   let cyclesToFinish = 0;
   let row = 0;
   let crt = [[], [], [], [], [], []];
+  let drawIndex = 0;
   while (queue.length > 0) {
-    if (cycles.indexOf(cycle) > -1) {
-      sum += register * cycle;
+    if (crtCycle.indexOf(cycle) > -1) {
       row++;
+      drawIndex = 0;
     }
     cycle++;
     cyclesToFinish = cyclesToFinish > 0 ? cyclesToFinish - 1 : 0;
@@ -180,6 +182,11 @@ const part1 = (input) => {
       command = '';
       value = 0;
     }
+
+    if (cycles.indexOf(cycle) > -1) {
+      sum += register * cycle;
+    }
+
     if (!command) {
       const line = queue.shift();
       command = line.command;
@@ -192,8 +199,15 @@ const part1 = (input) => {
         cyclesToFinish = 2;
       }
     }
+
+    let toDraw = [register - 1, register, register + 1].indexOf(drawIndex) > -1 ? '█' : ' ';
+    crt[row][cycle - 1] = toDraw;
+    drawIndex++;
   }
-  console.log(cycle);
-  return sum;
+  console.log('part1:', sum);
+  console.log('part2: ');
+  crt.forEach((row) => {
+    console.log(row.join(''));
+  });
 };
-console.log(part1(input));
+solution(input);
