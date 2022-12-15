@@ -40,9 +40,7 @@ const dijkstra = (start, end, allNodes) => {
 
   while (unvisited.length > 0) {
     let smallest = findSmallest();
-    if (start === smallest) {
-      console.log('eeee');
-    }
+
     unvisited = unvisited.filter((node) => node !== smallest);
     visited.push(smallest);
 
@@ -71,7 +69,7 @@ const solution = (input) => {
       return node;
     })
   );
-  const vertex = [];
+  const nodes = [];
   for (let i = 0; i < lines.length; i++) {
     for (let j = 0; j < lines[i].length; j++) {
       const node = lines[i][j];
@@ -87,10 +85,22 @@ const solution = (input) => {
       if (j < lines[i].length - 1) {
         node.addChild(lines[i][j + 1]);
       }
-      vertex.push(node);
+      nodes.push(node);
     }
   }
-  return dijkstra(start, end, vertex);
+  console.log('part 1:', dijkstra(start, end, nodes));
+
+  const part2 = nodes
+    .filter((node) => node.value === 1)
+    .reduce((fewestSteps, node) => {
+      const steps = dijkstra(node, end, nodes);
+      if (steps < fewestSteps) {
+        return steps;
+      }
+      return fewestSteps;
+    }, Infinity);
+  // 400s 522
+  console.log('part 2:', part2);
 };
 
-console.log('part 1:', solution(input));
+solution(input);
