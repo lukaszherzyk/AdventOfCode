@@ -19,11 +19,6 @@ console.log(part1());
 // part 2
 
 const mapper = (key) => {
-  if (
-    ['oneight', 'twone', 'threeight', 'fiveight', 'sevenine', 'nineight', 'eighthree'].includes(key)
-  ) {
-  }
-
   switch (key) {
     case 'one':
       return '1';
