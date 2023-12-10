@@ -31,6 +31,7 @@ temperature-to-humidity map:
 humidity-to-location map:
 60 56 37
 56 93 4`;
+const { performance } = require('perf_hooks');
 
 input = require('fs')
   .readFileSync(__dirname + '/input.txt')
@@ -69,5 +70,61 @@ const part1 = () => {
 };
 
 console.log(part1());
-const part2 = () => {};
-console.log(part2());
+// Seed 13, soil 13, fertilizer 52, water 41, light 34, temperature 34, humidity 35, location 35.
+const findSeed = (location, maps) => {
+  return maps.reduce((target, currentMap) => {
+    return currentMap.reduce((prev, curr) => {
+      const [sourceRangeStart, destinationRangeStart, range] = curr;
+      if (target >= sourceRangeStart && target < sourceRangeStart + range) {
+        return destinationRangeStart + target - sourceRangeStart;
+      }
+      return prev;
+    }, target);
+  }, location);
+};
+
+const inSeedRange = (seed, seedsRange) => {
+  return seedsRange.some((el) => seed >= el[0] && seed <= el[1]);
+};
+const part2 = () => {
+  const seeds = [
+    ...input
+      .split('\n')[0]
+      .split(':')[1]
+      .trim()
+      .matchAll(/\d+\s+\d+/g)
+  ].map((e) => {
+    return {
+      seed: Number(e[0].split(' ')[0]),
+      range: Number(e[0].split(' ')[1])
+    };
+  });
+  const maps = input
+    .split('\n\n')
+    .slice(1)
+    .map((e) => {
+      return e
+        .split('\n')
+        .slice(1)
+        .map((e) => e.split(' ').map(Number));
+    })
+    .reverse();
+  const seedRanges = seeds.reduce((prev, curr) => {
+    return [...prev, [curr.seed, curr.seed + curr.range - 1]];
+  }, []);
+
+  let location = 0;
+  let temp;
+  while (true) {
+    temp = findSeed(location, maps);
+
+    if (inSeedRange(temp, seedRanges)) {
+      return location;
+    }
+
+    location++;
+  }
+};
+let now = performance.now();
+console.log('part2:', part2());
+console.log('part2 time: ', performance.now() - now);
