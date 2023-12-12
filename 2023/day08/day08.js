@@ -1,3 +1,5 @@
+const { lcm } = require('../../utils.js');
+
 let input = `LLR
 
 AAA = (BBB, BBB)
@@ -7,6 +9,7 @@ ZZZ = (ZZZ, ZZZ)`;
 input = require('fs')
   .readFileSync(__dirname + '/input.txt')
   .toString();
+
 const part1 = () => {
   let [directions, nodes] = input.replace(/\(|\)/g, '').split('\n\n');
   const map = {};
@@ -35,11 +38,6 @@ const part1 = () => {
     }
     steps++;
   }
-};
-
-const lcm = (arr) => {
-  const gcd = (x, y) => (y ? gcd(y, x % y) : x);
-  return [...arr].reduce((a, b) => (a * b) / gcd(a, b));
 };
 
 console.log(part1());
