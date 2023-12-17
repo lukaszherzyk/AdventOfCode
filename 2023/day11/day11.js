@@ -12,15 +12,15 @@ input = require('fs')
   .readFileSync(__dirname + '/input.txt')
   .toString();
 
-const part1 = () => {
+const part1 = (expandSize) => {
   let grid = input.split('\n');
-  const emptyLine = Array.from({ length: grid[0].length }, () => '.').join('');
+  const emptyLine = Array.from({ length: expandSize }, () => '.').join('');
   const rowsToExpand = [];
   const columnsToExpand = [];
   for (let i = 0; i < grid.length; i++) {
     const emptyRow = !grid[i].split('').some((e) => e === '#');
 
-    if (emptyRow) {
+    if (emptyRow && expandSize) {
       rowsToExpand.push(i);
     }
   }
@@ -32,7 +32,7 @@ const part1 = () => {
       return prev;
     }, true);
 
-    if (emptyColumn) {
+    if (emptyColumn && expandSize) {
       columnsToExpand.push(i);
     }
   }
@@ -44,7 +44,7 @@ const part1 = () => {
       return `${line
         .split('')
         .slice(0, columnToExpand + index)
-        .join('')}.${line
+        .join('')}${'.'.repeat(expandSize)}${line
         .split('')
         .slice(columnToExpand + index)
         .join('')}`;
@@ -73,7 +73,16 @@ const part1 = () => {
       }, 0)
     );
   }, 0);
-  console.log('galaxies', galaxies.length);
-  console.log('sum', sum);
+
+  return sum;
 };
-part1();
+part1(1);
+part1(0);
+
+const a = part1(1);
+const b = part1(0);
+const n = 1_000_000;
+const part2 = b + (a - b) * (n - 1);
+
+console.log(a);
+console.log(part2);
