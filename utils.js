@@ -11,4 +11,22 @@ const lcm = (arr) => {
   const gcd = (x, y) => (y ? gcd(y, x % y) : x);
   return [...arr].reduce((a, b) => (a * b) / gcd(a, b));
 };
-module.exports = { perf, lcm };
+
+const permuteWithRepetition = (arr, length) => {
+  if (length === 1) {
+    return arr.map((el) => [el]);
+  }
+
+  const result = [];
+  const smallerPermutations = permuteWithRepetition(arr, length - 1);
+
+  arr.forEach((el) => {
+    smallerPermutations.forEach((smallerPerm) => {
+      result.push([el, ...smallerPerm]);
+    });
+  });
+
+  return result;
+};
+
+module.exports = { perf, lcm, permuteWithRepetition };
