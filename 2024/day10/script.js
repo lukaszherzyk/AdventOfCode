@@ -12,14 +12,6 @@ console.log = function (...args) {
   originalLog.apply(console, args);
 };
 
-input = `89010123
-78121874
-87430965
-96549874
-45678903
-32019012
-01329801
-10456732`;
 const fs = require('fs');
 input = fs.readFileSync(__dirname + '/input.txt').toString();
 
@@ -79,18 +71,66 @@ const part1 = () => {
     ends.forEach((end) => {
       const f = bfsFind(graph, start, end);
       if (f) {
-        // console.log({ f });
         sum++;
       }
     });
   });
-  console.log(sum);
-  // console.log(graph);
-  // prettyPrint(map);
-  // console.log(starts);
-  // console.log(ends);
+  return sum;
 };
-const part2 = () => {};
+const part2 = () => {
+  const map = input.split('\n').map((e) => e.split('')); //.map((e)=> Number));
+  const graph = {};
+  const starts = [];
+  const ends = [];
+  for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x < map[y].length; x++) {
+      const currentHeight = map[y][x];
+      if (currentHeight !== '.') {
+        const position = `${y}-${x}`;
+
+        if (currentHeight === '0') {
+          starts.push(`${y}-${x}`);
+        }
+
+        if (currentHeight === '9') {
+          ends.push(`${y}-${x}`);
+        }
+
+        graph[position] = [];
+        // TOPtop
+        const top = map[y - 1]?.[x];
+        if (top !== undefined && canClimb(currentHeight, top)) {
+          graph[position] = [...graph[position], `${y - 1}-${x}`];
+        }
+        // RIGHT
+        const right = map[y]?.[x + 1];
+        if (right !== undefined && canClimb(currentHeight, right)) {
+          graph[position] = [...graph[position], `${y}-${x + 1}`];
+        }
+        // BOTTOM
+        const bottom = map[y + 1]?.[x];
+        if (bottom !== undefined && canClimb(currentHeight, bottom)) {
+          graph[position] = [...graph[position], `${y + 1}-${x}`];
+        }
+        // LEFT
+        const left = map[y]?.[x - 1];
+        if (left !== undefined && canClimb(currentHeight, left)) {
+          graph[position] = [...graph[position], `${y}-${x - 1}`];
+        }
+      }
+    }
+  }
+
+  let sum = 0;
+  starts.forEach((start) => {
+    ends.forEach((end) => {
+      const f = bfsAllPaths(graph, start, end);
+
+      sum += f.length;
+    });
+  });
+  return sum;
+};
 
 console.log('PART_1:   ', part1());
 console.log('PART_2:   ', part2());
