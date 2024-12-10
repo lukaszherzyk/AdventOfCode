@@ -64,12 +64,15 @@ const dijkstra = (start, end, allNodes) => {
   return end.distance;
 };
 
-const bfs = (graph, startNode) => {
+const bfsFind = (graph, start, target) => {
   const visited = new Set();
-  const queue = [startNode];
+  const queue = [start];
 
   while (queue.length > 0) {
     const node = queue.shift();
+    if (node === target) {
+      return node;
+    }
     if (!visited.has(node)) {
       visited.add(node);
       const neighbors = graph[node];
@@ -81,21 +84,56 @@ const bfs = (graph, startNode) => {
     }
   }
 
-  return Array.from(visited);
+  return null;
 };
 
-// ============= bfs
+const bfsAllPaths = (graph, start, end) => {
+  const queue = [[start]];
+  const paths = [];
+
+  while (queue.length > 0) {
+    const path = queue.shift();
+    const node = path[path.length - 1];
+
+    if (node === end) {
+      paths.push(path);
+    } else {
+      for (const neighbor of graph[node]) {
+        if (!path.includes(neighbor)) {
+          queue.push([...path, neighbor]);
+        }
+      }
+    }
+  }
+
+  return paths;
+};
+
+// ============= bfsAllPaths
 // const graph = {
 //   A: ['B', 'C'],
-//   B: ['A', 'D', 'E'],
-//   C: ['A', 'F'],
-//   D: ['B'],
-//   E: ['B', 'F'],
-//   F: ['C', 'E']
+//   B: ['D'],
+//   C: ['D'],
+//   D: []
 // };
 
-// const result = bfs(graph, 'A');
-// console.log(result); // Output: ['A', 'B', 'C', 'D', 'E', 'F']
+// console.log(bfsAllPaths(graph, 'A', 'D'));
+
+// ============= bfsFind
+// const graph = {
+//   A: ['B', 'C'],
+//   B: ['D', 'E'],
+//   C: ['F'],
+//   D: [],
+//   E: ['F'],
+//   F: []
+// };
+
+// const startNode = 'A';
+// const targetValue = 'E';
+
+// const result = bfsFind(graph, startNode, targetValue);
+// console.log(result); //  'E'
 
 // ============= dijkstra
 // const nodeA = { name: 'A', children: [] };
@@ -117,4 +155,11 @@ const bfs = (graph, startNode) => {
 
 // console.log(`Shortest distance from A to D is: ${shortestDistance}`);
 
-module.exports = { perf, lcm, permuteWithRepetition, dijkstra, bfs };
+module.exports = {
+  perf,
+  lcm,
+  permuteWithRepetition,
+  dijkstra,
+  bfsAllPaths,
+  bfsFind
+};
