@@ -1,7 +1,5 @@
 let input = `2333133121414131402`;
 
-const { permuteWithRepetition, perf } = require('../../utils.js');
-
 // console.log = function (...args) {
 //   args = args.map((arg) =>
 //     typeof arg === 'object' ? JSON.stringify(arg, null, '  ') : arg
@@ -9,59 +7,11 @@ const { permuteWithRepetition, perf } = require('../../utils.js');
 //   originalLog.apply(console, args);
 // };
 
-const fs = require('fs');
-
 input = fs.readFileSync(__dirname + '/input.txt').toString();
 
 const prettyPrint = (e) => {
   console.log(e.map((el) => el.join(' ')));
 };
-const d_sample = [
-  0,
-  0,
-  10,
-  9,
-  9,
-  1,
-  1,
-  1,
-  8,
-  8,
-  8,
-  2,
-  8,
-  7,
-  7,
-  3,
-  3,
-  3,
-  7,
-  4,
-  4,
-  6,
-  5,
-  5,
-  5,
-  5,
-  6,
-  6,
-  6,
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.',
-  '.'
-];
 
 const part1 = () => {
   let id = 0;
@@ -122,9 +72,7 @@ const part2 = () => {
 
   let furthestIndex = disk.length - 1;
   let i = 0;
-  let spaceLength = 0;
   id = null;
-  let blockLength = 0;
   const findSpaceBlock = (memoryLength) => {
     const spaceBlock = [];
     for (let x = 0; x < disk.length; x++) {
