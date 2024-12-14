@@ -155,11 +155,31 @@ const bfsAllPaths = (graph, start, end) => {
 
 // console.log(`Shortest distance from A to D is: ${shortestDistance}`);
 
+const prettyPrintGrid = (e) => {
+  for (let i = 0; i < e.length; i++) {
+    const row = e[i];
+    let yLabel = `${i}  `;
+    if (i == 0) {
+      let xLabel = '   ';
+      for (let j = 0; j < row.length; j++) {
+        xLabel += `${j} `;
+      }
+      console.log(xLabel);
+    }
+    for (let j = 0; j < row.length; j++) {
+      yLabel += `${row[j]} `;
+    }
+    console.log(yLabel);
+  }
+  console.log('\n');
+};
+
 module.exports = {
   perf,
   lcm,
   permuteWithRepetition,
   dijkstra,
   bfsAllPaths,
-  bfsFind
+  bfsFind,
+  prettyPrintGrid
 };
