@@ -158,16 +158,34 @@ const bfsAllPaths = (graph, start, end) => {
 const prettyPrintGrid = (e) => {
   for (let i = 0; i < e.length; i++) {
     const row = e[i];
-    let yLabel = `${i}  `;
+    let yLabel = `${i}   `;
     if (i == 0) {
-      let xLabel = '   ';
+      let xLabel = '    ';
       for (let j = 0; j < row.length; j++) {
-        xLabel += `${j} `;
+        xLabel += `${j}  `;
       }
       console.log(xLabel);
     }
     for (let j = 0; j < row.length; j++) {
-      yLabel += `${row[j]} `;
+      yLabel += `${row[j]}  `;
+    }
+    console.log(yLabel);
+  }
+  console.log('\n');
+};
+
+const printGrid = (e) => {
+  for (let i = 0; i < e.length; i++) {
+    const row = e[i];
+    let yLabel = '';
+    if (i == 0) {
+      let xLabel = '';
+      for (let j = 0; j < row.length; j++) {
+        xLabel += `${j} `;
+      }
+    }
+    for (let j = 0; j < row.length; j++) {
+      yLabel += `${row[j]}`;
     }
     console.log(yLabel);
   }
@@ -181,5 +199,6 @@ module.exports = {
   dijkstra,
   bfsAllPaths,
   bfsFind,
-  prettyPrintGrid
+  prettyPrintGrid,
+  printGrid
 };
